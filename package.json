@@ -1,23 +1,25 @@
 {
-  "name": "bot-node",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "better-sqlite3": "^5.4.0",
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "express-basic-auth": "^1.1.5",
-    "request": "^2.87.0"
-  },
-  "engines": {
-    "node": ">=10.12.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "MIT"
+  "name": "signal",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "dependencies": {
+      "better-sqlite3": "^5.4.0",
+      "body-parser": "^1.18.3",
+      "cors": "^2.8.4",
+      "dotenv": "^16.0.3",
+      "express": "^4.16.3",
+      "express-basic-auth": "^1.1.5",
+      "request": "^2.87.0"
+    },
+    "engines": {
+      "node": ">=10.12.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Javier Arce <4933+javierarce@users.noreply.github.com>",
+    "license": "MIT",
+    "repository": "git@github.com:javierarce/express-activitypub.git"
 }
