@@ -34,6 +34,5 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         PASSPHRASE: ${{ secrets.PASSPHRASE }}
         script: |
-          nvm use 15.8.0
           yarn --cwd /home/javier/signal
           pm2 restart signal
