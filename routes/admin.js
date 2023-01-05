@@ -33,6 +33,9 @@ function createWebfinger(name, domain) {
         'rel': 'self',
         'type': 'application/activity+json',
         'href': `https://${domain}/u/${name}`
+      }, {
+        "rel": "http://webfinger.net/rel/avatar",
+        "href": "https://javier.computer/img/avatar.png"
       }
     ]
   };
