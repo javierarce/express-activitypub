@@ -1,9 +1,9 @@
-'use strict';
-const express = require('express'),
-      router = express.Router(),
-      crypto = require('crypto');
+'use strict'
+const express = require('express')
+const router = express.Router()
+const crypto = require('crypto')
 
-function createActor(name, domain, pubkey) {
+const createActor = (name, domain, pubkey) => {
   return {
     '@context': [
       'https://www.w3.org/ns/activitystreams',
@@ -15,13 +15,17 @@ function createActor(name, domain, pubkey) {
     'preferredUsername': `${name}`,
     'inbox': `https://${domain}/api/inbox`,
     'followers': `https://${domain}/u/${name}/followers`,
-
+    'icon': {
+      'type': "Image",
+      'mediaType': "image/jpeg",
+      'url': "https://javier.computer/img/avatar.png"
+    },
     'publicKey': {
       'id': `https://${domain}/u/${name}#main-key`,
       'owner': `https://${domain}/u/${name}`,
       'publicKeyPem': pubkey
     }
-  };
+  }
 }
 
 function createWebfinger(name, domain) {
@@ -33,22 +37,22 @@ function createWebfinger(name, domain) {
         'rel': 'self',
         'type': 'application/activity+json',
         'href': `https://${domain}/u/${name}`
-      }, {
-        "rel": "http://webfinger.net/rel/avatar",
-        "href": "https://javier.computer/img/avatar.png"
       }
     ]
-  };
+  }
 }
 
-router.post('/create', function (req, res) {
+const onCreate = (req, res) => {
   // pass in a name for an account, if the account doesn't exist, create it!
-  const account = req.body.account;
+  const account = req.body.account
+
   if (account === undefined) {
-    return res.status(400).json({msg: 'Bad request. Please make sure "account" is a property in the POST body.'});
+    return res.status(400).json({msg: 'Bad request. Please make sure "account" is a property in the POST body.'})
   }
-  let db = req.app.get('db');
-  let domain = req.app.get('domain');
+
+  const db = req.app.get('db')
+  const domain = req.app.get('domain')
+
   // create keypair
   crypto.generateKeyPair('rsa', {
     modulusLength: 4096,
@@ -61,17 +65,19 @@ router.post('/create', function (req, res) {
       format: 'pem'
     }
   }, (err, publicKey, privateKey) => {
-    let actorRecord = createActor(account, domain, publicKey);
-    let webfingerRecord = createWebfinger(account, domain);
-    const apikey = crypto.randomBytes(16).toString('hex');
+    const actorRecord = createActor(account, domain, publicKey)
+    const webfingerRecord = createWebfinger(account, domain)
+    const apikey = crypto.randomBytes(16).toString('hex')
     try {
-      db.prepare('insert or replace into accounts(name, actor, apikey, pubkey, privkey, webfinger) values(?, ?, ?, ?, ?, ?)').run(`${account}@${domain}`, JSON.stringify(actorRecord), apikey, publicKey, privateKey, JSON.stringify(webfingerRecord));
-      res.status(200).json({msg: 'ok', apikey});
+      db.prepare('insert or replace into accounts(name, actor, apikey, pubkey, privkey, webfinger) values(?, ?, ?, ?, ?, ?)').run(`${account}@${domain}`, JSON.stringify(actorRecord), apikey, publicKey, privateKey, JSON.stringify(webfingerRecord))
+      res.status(200).json({msg: 'ok', apikey})
     }
     catch(e) {
-      res.status(200).json({error: e});
+      res.status(200).json({error: e})
     }
-  });
-});
+  })
+}
 
-module.exports = router;
+router.post('/create', onCreate)
+
+module.exports = router
