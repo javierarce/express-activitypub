@@ -17,7 +17,7 @@ const createActor = (name, domain, pubkey) => {
     'followers': `https://${domain}/u/${name}/followers`,
     'icon': {
       'type': "Image",
-      'mediaType': "image/jpeg",
+      'mediaType': "image/png",
       'url': "https://javier.computer/img/avatar.png"
     },
     'publicKey': {
